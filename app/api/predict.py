@@ -17,12 +17,14 @@ router = APIRouter()
 reg_file2 = open('app/api/logistic.model2', 'rb')  # trained with 1000 subreddit posts
 reg_file3 = open('app/api/logistic.model3', 'rb')  # trained with 10,000 subreddit posts
 # represent the model and can take a post and out a prediction
-log_reg = pickle.load(reg_file)
+
 log_reg2 = pickle.load(reg_file2)
 log_reg3 = pickle.load(reg_file3)
 
 BASILICA = basilica.Connection(config('BASILICA_KEY'))
 
+
+# update
 
 class Item(BaseModel):
     """Use this data model to parse the request body JSON."""
@@ -52,6 +54,7 @@ async def predict(item: Item):
 
     # X_new = item.to_df()
     # log.info(X_new)
+    # change
     post = item.reddit_post
     post2 = str(post)
     reddit_embedding = BASILICA.embed_sentence(post2)
