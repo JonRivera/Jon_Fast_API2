@@ -1,5 +1,5 @@
 import logging
-import random
+
 import pickle
 import basilica
 import numpy as np
@@ -7,18 +7,15 @@ import pandas as pd
 from fastapi import APIRouter
 
 from pydantic import BaseModel, Field, validator
-from sklearn.linear_model import LogisticRegression
 from decouple import config
 
 log = logging.getLogger(__name__)
 router = APIRouter()
 
-# Import Logistic Model
-# reg_file2 = open('app/api/logistic.model2', 'rb')  # trained with 1000 subreddit posts
-reg_file3 = open('app/api/logistic.model3', 'rb')  # trained with 10,000 subreddit posts
+reg_file3 = open('app/api/logistic.model3', 'rb')
+# trained with 10,000 subreddit posts
 # represent the model and can take a post and out a prediction
 
-# log_reg2 = pickle.load(reg_file2)
 log_reg3 = pickle.load(reg_file3)
 
 BASILICA = basilica.Connection(config('BASILICA_KEY'))
