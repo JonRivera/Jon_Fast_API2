@@ -14,8 +14,6 @@ log = logging.getLogger(__name__)
 router = APIRouter()
 
 # Import Logistic Model
-reg_file = open('/Users/johnrivera/Documents/Projects/Jon_Fast_API/app/api/logistic.model',
-                'rb')  # train with 100 posts
 reg_file2 = open('app/api/logistic.model2', 'rb')  # trained with 1000 subreddit posts
 reg_file3 = open('app/api/logistic.model3', 'rb')  # trained with 10,000 subreddit posts
 # represent the model and can take a post and out a prediction
