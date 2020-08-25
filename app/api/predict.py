@@ -12,6 +12,7 @@ from decouple import config
 import os
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 BASILICA_KEY = os.getenv('BASILICA_KEY')
@@ -55,10 +56,8 @@ async def predict(item: Item):
 
     Replace the placeholder docstring and fake predictions with your own model.
     """
-
-    # X_new = item.to_df()
-    # log.info(X_new)
-    # change
+    BASILICA_KEY = os.getenv('BASILICA_KEY')
+    BASILICA = basilica.Connection(BASILICA_KEY)
     post = item.reddit_post
     post2 = str(post)
     reddit_embedding = BASILICA.embed_sentence(post2)
