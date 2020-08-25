@@ -56,11 +56,8 @@ async def predict(item: Item):
 
     Replace the placeholder docstring and fake predictions with your own model.
     """
-    BASILICA_KEY = os.getenv('BASILICA_KEY')
-    BASILICA = basilica.Connection(BASILICA_KEY)
     post = item.reddit_post
-    post2 = str(post)
-    reddit_embedding = BASILICA.embed_sentence(post2)
+    reddit_embedding = BASILICA.embed_sentence(post,model='reddit')
     y_pred = log_reg3.predict(np.array(reddit_embedding).reshape(1, -1))
     prediction = str(y_pred[0])
     return {
