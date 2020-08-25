@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASILICA_KEY = os.getenv('BASILICA_KEY')
-BASILICA_KEY = "79a607aa-3e02-eb67-96cb-a7b21ff06e79"
 log = logging.getLogger(__name__)
 router = APIRouter()
 
