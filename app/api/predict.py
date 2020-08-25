@@ -9,6 +9,13 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field, validator
 from decouple import config
 
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+BASILICA_KEY = os.getenv('BASILICA_KEY')
+
 log = logging.getLogger(__name__)
 router = APIRouter()
 
@@ -18,7 +25,7 @@ reg_file3 = open('app/api/logistic.model3', 'rb')
 
 log_reg3 = pickle.load(reg_file3)
 
-BASILICA = basilica.Connection(config('BASILICA_KEY'))
+BASILICA = basilica.Connection(BASILICA_KEY)
 
 
 # update
