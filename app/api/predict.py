@@ -15,8 +15,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASILICA_KEY = os.getenv('BASILICA_KEY')
-
+# BASILICA_KEY = os.getenv('BASILICA_KEY')
+BASILICA_KEY = "79a607aa-3e02-eb67-96cb-a7b21ff06e79"
 log = logging.getLogger(__name__)
 router = APIRouter()
 
@@ -57,7 +57,7 @@ async def predict(item: Item):
     Replace the placeholder docstring and fake predictions with your own model.
     """
     post = item.reddit_post
-    reddit_embedding = BASILICA.embed_sentence(post,model='reddit')
+    reddit_embedding = BASILICA.embed_sentence(post, model='reddit')
     y_pred = log_reg3.predict(np.array(reddit_embedding).reshape(1, -1))
     prediction = str(y_pred[0])
     return {
