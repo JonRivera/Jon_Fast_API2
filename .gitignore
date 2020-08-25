@@ -1,2 +1,6 @@
+.DS_Store
 .env
-/.env
+.ipynb_checkpoints
+.pytest_cache
+.vscode
+Pipfile.lock
