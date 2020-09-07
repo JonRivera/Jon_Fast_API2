@@ -7,17 +7,12 @@ import pandas as pd
 from fastapi import APIRouter
 
 from pydantic import BaseModel, Field, validator
-from decouple import config
-
 import os
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
-BASILICA_KEY = os.getenv('BASILICA_KEY')
 log = logging.getLogger(__name__)
 router = APIRouter()
+BASILICA_KEY ="79a607aa-3e02-eb67-96cb-a7b21ff06e79"
+#BASILICA_KEY = os.getenv('BASILICA_KEY')
 
 reg_file3 = open('app/api/logistic.model3', 'rb')
 # trained with 10,000 subreddit posts
@@ -37,6 +32,7 @@ class Subreddit_Post(BaseModel):
     reddit_post: str = Field(...,
                              example="Made this meme for the upcoming tsm match. Don't have a good"
                                      " editing software but I hope you enjoy! #C9WIN")
+    n: int = Field(..., example=1)
 
     @validator('title')
     def check_title(cls, value):
@@ -48,6 +44,13 @@ class Subreddit_Post(BaseModel):
     def check_body(cls, value):
         """Validate that title is a string."""
         assert type(value) == str, f'Body == {value}, must be a string'
+        return value
+
+    @validator('n')
+    def check_n(cls, value):
+        """Validate that title is a string."""
+        assert type(value) == int, f'value == {value}, must be an integer'
+        assert value >= 1, f'n == {value} must be greater or to 1'
         return value
 
 
@@ -68,12 +71,14 @@ async def predict(item: Subreddit_Post):
     """
     post = item.reddit_post
     reddit_embedding = BASILICA.embed_sentence(post, model='reddit')
-    y_pred = log_reg3.predict(np.array(reddit_embedding).reshape(1, -1))
-    y_proba = log_reg3.predict_proba(np.array(reddit_embedding).reshape(1, -1))
+    prediction = log_reg3.predict(np.array(reddit_embedding).reshape(1, -1))
+    probability = log_reg3.predict_proba(np.array(reddit_embedding).reshape(1, -1))[0]
 
-    return {
-        'Reditt_Post': item.title,
-        'Predicted_Subreddit': str(y_pred[0]),
-        'Probabillity': str(y_proba[0][0]),
 
-    }
+
+    # 'Predicted_Subreddit': str(prediction[0]),
+    # 'Probability': str(probability[0][0]),
+    subreddits_probs = list(zip(log_reg3.classes_, probability))
+    subreddits_probs_sorted = sorted(subreddits_probs, key=lambda x:x[1], reverse=True)
+    return {'Post Title': item.title,
+        'subreddits_predicted':subreddits_probs_sorted[:item.n]}
